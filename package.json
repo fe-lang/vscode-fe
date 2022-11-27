@@ -2,17 +2,17 @@
     "name": "fe",
     "displayName": "Fe",
     "description": "VsCode plugin for Fe smart contract programming language.",
-    "publisher": "devdao",
+    "publisher": "FeLang Developers",
     "license": "Apache-2.0",
     "version": "0.0.1",
     "preview": true,
-    "homepage": "https://github.com/Developer-DAO/vscode-fe",
+    "homepage": "https://github.com/fe-lang/vscode-fe",
     "repository": {
-        "url": "https://github.com/Developer-DAO/vscode-fe.git",
+        "url": "https://github.com/fe-lang/vscode-fe.git",
         "type": "git"
     },
     "bugs": {
-        "url": "https://github.com/Developer-DAO/vscode-fe/issues"
+        "url": "https://github.com/fe-lang/vscode-fe/issues"
     },
     "engines": {
         "vscode": "^1.58.2"
