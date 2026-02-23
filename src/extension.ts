@@ -10,76 +10,82 @@ import * as fs from "fs";
 
 let client: LanguageClient;
 
-function verifyPath(filepath: string): string | undefined {
-  try {
-    fs.accessSync(filepath);
-    return filepath;
-  } catch {
-    return undefined;
+function findInPath(name: string): string | undefined {
+  const pathEnv = process.env.PATH || "";
+  const sep = os.platform() === "win32" ? ";" : ":";
+  for (const dir of pathEnv.split(sep)) {
+    const full = path.join(dir, name);
+    try {
+      fs.accessSync(full, fs.constants.X_OK);
+      return full;
+    } catch {
+      continue;
+    }
   }
+  return undefined;
 }
 
 function getServerPath(): string {
-  // Check configuration first
+  // User-configured path takes priority
   const config = vscode.workspace.getConfiguration("fe-analyzer");
   const customPath = config.get<string>("binaryPath");
-  if (customPath && verifyPath(customPath)) {
-    return customPath;
-  }
-
-  // Development path
-  if (process.env.NODE_ENV === "development") {
-    const devPath = path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "..",
-      "..",
-      "target",
-      "debug",
-      "fe-language-server",
-    );
-    const verifiedDevPath = verifyPath(devPath);
-    if (verifiedDevPath) {
-      return verifiedDevPath;
+  if (customPath) {
+    try {
+      fs.accessSync(customPath, fs.constants.X_OK);
+      return customPath;
+    } catch {
+      // fall through to PATH lookup
     }
   }
 
-  // Production paths
-  const platform = os.platform();
-  const binariesDir = path.join(__dirname, "..", "server");
-  const executable =
-    platform === "win32" ? "fe-language-server.exe" : "fe-language-server";
-
-  // Explicitly type the platform paths
-  const platformPaths: Record<string, string> = {
-    win32: path.join(binariesDir, "windows", executable),
-    darwin: path.join(binariesDir, "mac", executable),
-    linux: path.join(binariesDir, "x86_64-unknown-linux-gnu", executable),
-  };
-
-  const platformPath = platformPaths[platform];
-  if (platformPath) {
-    const verifiedPlatformPath = verifyPath(platformPath);
-    if (verifiedPlatformPath) {
-      return verifiedPlatformPath;
-    }
+  // Find in PATH
+  const executable = os.platform() === "win32" ? "fe.exe" : "fe";
+  const found = findInPath(executable);
+  if (found) {
+    return found;
   }
 
-  // Fallback to PATH lookup
-  const pathEnv = process.env.PATH || "";
-  const pathSeparator = platform === "win32" ? ";" : ":";
-  const paths = pathEnv.split(pathSeparator);
-
-  for (const p of paths) {
-    const fullPath = path.join(p, executable);
-    if (verifyPath(fullPath)) {
-      return fullPath;
-    }
+  // Check ~/.cargo/bin (VS Code often doesn't inherit shell PATH)
+  const cargoBin = path.join(os.homedir(), ".cargo", "bin", executable);
+  try {
+    fs.accessSync(cargoBin, fs.constants.X_OK);
+    return cargoBin;
+  } catch {
+    // not there either
   }
 
-  throw new Error("Could not find fe-language-server executable");
+  throw new Error(
+    "Could not find fe in PATH or ~/.cargo/bin. Install it with: cargo install --path crates/fe fe",
+  );
+}
+
+function registerCommands(context: vscode.ExtensionContext) {
+  // Bridge: convert JSON args from the server into VS Code types
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "fe.showReferences",
+      async (uriStr: string, posJson: { line: number; character: number }, locsJson: { uri: string; range: { start: { line: number; character: number }; end: { line: number; character: number } } }[]) => {
+        const uri = vscode.Uri.parse(uriStr);
+        const pos = new vscode.Position(posJson.line, posJson.character);
+        const locs = locsJson.map(
+          (l) =>
+            new vscode.Location(
+              vscode.Uri.parse(l.uri),
+              new vscode.Range(
+                new vscode.Position(l.range.start.line, l.range.start.character),
+                new vscode.Position(l.range.end.line, l.range.end.character),
+              ),
+            ),
+        );
+        await vscode.commands.executeCommand(
+          "editor.action.showReferences",
+          uri,
+          pos,
+          locs,
+        );
+      },
+    ),
+  );
 }
 
 export async function activate(
@@ -89,8 +95,8 @@ export async function activate(
     const serverPath = getServerPath();
 
     const serverOptions: ServerOptions = {
-      run: { command: serverPath },
-      debug: { command: serverPath },
+      run: { command: serverPath, args: ["lsp"] },
+      debug: { command: serverPath, args: ["lsp"] },
     };
 
     const clientOptions: LanguageClientOptions = {
@@ -104,6 +110,7 @@ export async function activate(
       clientOptions,
     );
 
+    registerCommands(context);
     await client.start();
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
