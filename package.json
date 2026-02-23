@@ -17,8 +17,7 @@
     "Other"
   ],
   "files": [
-    "./out/",
-    "./server/binaries/**"
+    "./out/"
   ],
   "main": "./out/extension.js",
   "activationEvents": [
@@ -60,8 +59,7 @@
     }
   },
   "scripts": {
-    "copy-builds": "arch=$(basename $(dirname $(dirname $(find ../../../../target/*/release/ -name 'fe-language-server' -type f)))) && rsync -av $(find ../../../../target/*/release/ -name 'fe-language-server' -type f) ./server/$arch/",
-    "vscode:prepublish": "npm run copy-builds && npm run compile",
+    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
