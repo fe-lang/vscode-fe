@@ -16,9 +16,6 @@
   "categories": [
     "Other"
   ],
-  "files": [
-    "./out/"
-  ],
   "main": "./out/extension.js",
   "activationEvents": [
     "onLanguage:fe"
