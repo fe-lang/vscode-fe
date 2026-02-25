@@ -1,10 +1,17 @@
-# Fe Language VSCode Extension
+# Fe for Visual Studio Code
 
-## Installation
+Syntax highlighting, diagnostics, go-to-definition, and more for the [Fe](https://fe-lang.org) programming language.
 
-### Prerequisites
+## Features
 
-**`fe` CLI** (includes the language server) must be installed and available in your PATH:
+- Syntax highlighting via TextMate grammar
+- Diagnostics (errors and warnings) from the Fe compiler
+- Go-to-definition
+- Find references
+
+## Prerequisites
+
+The `fe` CLI (which includes the language server) must be installed:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/argotorg/fe/master/feup/feup.sh | bash
@@ -16,27 +23,19 @@ Or build from source:
 cargo install --git https://github.com/argotorg/fe.git fe
 ```
 
-### VSCode Extension
+The extension looks for the `fe` binary in the following order:
+
+1. `FE_PATH` environment variable
+2. `PATH`
+3. `~/.fe/bin` (feup install location)
+4. `~/.cargo/bin`
+
+## Installation
 
 Download the latest `.vsix` from the [releases page](https://github.com/fe-lang/vscode-fe/releases), then install it:
 
 ```sh
-code --install-extension fe-analyzer-0.0.1.vsix
+code --install-extension fe-analyzer-*.vsix
 ```
 
-Or install from within VSCode: open the command palette (`Ctrl+Shift+P`), run **Extensions: Install from VSIX...**, and select the downloaded file.
-
-## Development/Debugging
-
-Open the Fe codebase root workspace in VSCode and press `F5` to debug the extension using the "Launch Fe VSCode Extension" configuration.
-
-## Building releases
-
-Releases are built automatically via GitHub Actions. Push a version tag to trigger a release:
-
-```sh
-git tag v0.0.1
-git push origin v0.0.1
-```
-
-This packages the extension as a `.vsix` and attaches it to a GitHub Release.
+Or from within VS Code: open the command palette (`Ctrl+Shift+P`), run **Extensions: Install from VSIX...**, and select the downloaded file.

@@ -1,32 +1,39 @@
 {
   "name": "fe-analyzer",
-  "displayName": "fe-analyzer",
-  "description": "Support for the Fe language.",
-  "version": "0.0.2",
+  "displayName": "Fe",
+  "description": "Fe language support — syntax highlighting, diagnostics, go-to-definition, and more via the built-in language server.",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.78.0"
   },
   "license": "MIT",
   "author": "Fe Language Team",
   "publisher": "fe-language-team",
+  "homepage": "https://fe-lang.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/your-repo-name.git"
+    "url": "https://github.com/fe-lang/vscode-fe.git"
   },
+  "bugs": {
+    "url": "https://github.com/fe-lang/vscode-fe/issues"
+  },
+  "keywords": [
+    "fe",
+    "smart contracts",
+    "ethereum",
+    "evm",
+    "language server"
+  ],
+  "icon": "icon.png",
   "categories": [
-    "Other"
+    "Programming Languages"
   ],
   "main": "./out/extension.js",
   "activationEvents": [
     "onLanguage:fe"
   ],
   "contributes": {
-    "commands": [
-      {
-        "command": "fe-analyzer.helloWorld",
-        "title": "Hello World"
-      }
-    ],
+    "commands": [],
     "languages": [
       {
         "id": "fe",
