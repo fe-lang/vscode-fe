@@ -2,9 +2,9 @@
 
 ## Installation
 
-### Fe CLI
+### Prerequisites
 
-The `fe` CLI (which includes the language server) must be installed and available in your PATH:
+**`fe` CLI** (includes the language server) must be installed and available in your PATH:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/argotorg/fe/master/feup/feup.sh | bash
@@ -15,6 +15,16 @@ Or build from source:
 ```sh
 cargo install --git https://github.com/argotorg/fe.git fe
 ```
+
+### VSCode Extension
+
+Download the latest `.vsix` from the [releases page](https://github.com/fe-lang/vscode-fe/releases), then install it:
+
+```sh
+code --install-extension fe-analyzer-0.0.1.vsix
+```
+
+Or install from within VSCode: open the command palette (`Ctrl+Shift+P`), run **Extensions: Install from VSIX...**, and select the downloaded file.
 
 ## Development/Debugging
 
