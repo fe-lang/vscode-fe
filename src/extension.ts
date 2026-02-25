@@ -26,23 +26,32 @@ function findInPath(name: string): string | undefined {
 }
 
 function getServerPath(): string {
-  // User-configured path takes priority
-  const config = vscode.workspace.getConfiguration("fe-analyzer");
-  const customPath = config.get<string>("binaryPath");
-  if (customPath) {
+  const executable = os.platform() === "win32" ? "fe.exe" : "fe";
+
+  // FE_PATH env var takes priority (consistent across all Fe editor extensions)
+  const fePath = process.env.FE_PATH;
+  if (fePath) {
     try {
-      fs.accessSync(customPath, fs.constants.X_OK);
-      return customPath;
+      fs.accessSync(fePath, fs.constants.X_OK);
+      return fePath;
     } catch {
-      // fall through to PATH lookup
+      // fall through
     }
   }
 
   // Find in PATH
-  const executable = os.platform() === "win32" ? "fe.exe" : "fe";
   const found = findInPath(executable);
   if (found) {
     return found;
+  }
+
+  // Check ~/.fe/bin (installed by feup)
+  const feupBin = path.join(os.homedir(), ".fe", "bin", executable);
+  try {
+    fs.accessSync(feupBin, fs.constants.X_OK);
+    return feupBin;
+  } catch {
+    // not there either
   }
 
   // Check ~/.cargo/bin (VS Code often doesn't inherit shell PATH)
@@ -55,7 +64,7 @@ function getServerPath(): string {
   }
 
   throw new Error(
-    "Could not find fe in PATH or ~/.cargo/bin. Install it with: cargo install --path crates/fe fe",
+    "Could not find fe. Set FE_PATH or install with: curl -L https://raw.githubusercontent.com/argotorg/fe/master/feup/feup.sh | bash",
   );
 }
 

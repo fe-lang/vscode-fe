@@ -46,13 +46,7 @@
     "configuration": {
       "type": "object",
       "title": "Fe Language Server Configuration",
-      "properties": {
-        "fe-analyzer.binaryPath": {
-          "type": "string",
-          "default": "",
-          "description": "Path to the fe-language-server binary. Leave empty to use the default bundled binary."
-        }
-      }
+      "properties": {}
     }
   },
   "scripts": {
