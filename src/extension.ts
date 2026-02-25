@@ -45,20 +45,20 @@ function getServerPath(): string {
     return found;
   }
 
-  // Check ~/.fe/bin (installed by feup)
-  const feupBin = path.join(os.homedir(), ".fe", "bin", executable);
-  try {
-    fs.accessSync(feupBin, fs.constants.X_OK);
-    return feupBin;
-  } catch {
-    // not there either
-  }
-
   // Check ~/.cargo/bin (VS Code often doesn't inherit shell PATH)
   const cargoBin = path.join(os.homedir(), ".cargo", "bin", executable);
   try {
     fs.accessSync(cargoBin, fs.constants.X_OK);
     return cargoBin;
+  } catch {
+    // not there either
+  }
+
+  // Check ~/.fe/bin (installed by feup)
+  const feupBin = path.join(os.homedir(), ".fe", "bin", executable);
+  try {
+    fs.accessSync(feupBin, fs.constants.X_OK);
+    return feupBin;
   } catch {
     // not there either
   }
