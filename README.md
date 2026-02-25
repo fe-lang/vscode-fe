@@ -27,8 +27,8 @@ The extension looks for the `fe` binary in the following order:
 
 1. `FE_PATH` environment variable
 2. `PATH`
-3. `~/.fe/bin` (feup install location)
-4. `~/.cargo/bin`
+3. `~/.cargo/bin`
+4. `~/.fe/bin` (feup install location)
 
 ## Installation
 
