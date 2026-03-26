@@ -1,0 +1,38 @@
+name: Test Extension (macOS)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Install Fe via the standard user install flow (feup.sh)
+      - name: Install Fe CLI via feup
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/argotorg/fe/master/feup/feup.sh | bash -s -- --no-modify-path
+          echo "$HOME/.fe/bin" >> "$GITHUB_PATH"
+
+      - name: Verify Fe installation
+        run: |
+          which fe
+          fe --version
+
+      - name: Install extension dependencies
+        run: npm ci
+
+      - name: Compile extension
+        run: npm run compile
+
+      - name: Run integration tests
+        run: npm test
