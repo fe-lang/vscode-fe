@@ -34,18 +34,5 @@ jobs:
       - name: Compile extension
         run: npm run compile
 
-      - name: Pre-download VS Code for tests
-        run: |
-          node -e "
-            const { downloadAndUnzipVSCode } = require('@vscode/test-electron');
-            downloadAndUnzipVSCode().then(p => console.log('Executable:', p));
-          "
-          # Debug: show what was extracted
-          echo "--- .vscode-test contents ---"
-          find .vscode-test -maxdepth 4 -type f -name 'Electron*' -o -name 'Code*' -o -name 'code' 2>/dev/null || true
-          ls -la .vscode-test/*/Visual\ Studio\ Code.app/Contents/MacOS/ 2>/dev/null || echo "MacOS dir not found"
-          # Remove quarantine from the whole .app bundle
-          xattr -cr .vscode-test 2>/dev/null || true
-
       - name: Run integration tests
         run: npm test
