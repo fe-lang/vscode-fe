@@ -22,12 +22,10 @@ const clientLog = new (class {
   }
 
   warn(...msg: [unknown, ...unknown[]]): void {
-      debugger;
       clientLog.write("WARN", ...msg);
   }
 
   error(...msg: [unknown, ...unknown[]]): void {
-      debugger;
       clientLog.write("ERROR", ...msg);
       clientLog.output.show(true);
   }

@@ -64,7 +64,7 @@ function getServerPath(): string {
   }
 
   throw new Error(
-    "Could not find fe. Set FE_PATH or install with: curl -L https://raw.githubusercontent.com/argotorg/fe/master/feup/feup.sh | bash",
+    "Could not find fe. Set FE_PATH or install from: https://fe-lang.org",
   );
 }
 
