@@ -1,8 +1,8 @@
 {
-  "name": "fe-analyzer",
+  "name": "vscode-fe",
   "displayName": "Fe",
   "description": "Fe language support — syntax highlighting, diagnostics, go-to-definition, and more via the built-in language server.",
-  "version": "0.0.4",
+  "version": "0.1.0-alpha.2",
   "engines": {
     "vscode": "^1.78.0"
   },
