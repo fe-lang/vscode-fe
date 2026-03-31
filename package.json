@@ -1,14 +1,14 @@
 {
-  "name": "vscode-fe",
-  "displayName": "Fe",
+  "name": "fe-language",
+  "displayName": "The Fe Programming Language",
   "description": "Fe language support — syntax highlighting, diagnostics, go-to-definition, and more via the built-in language server.",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.78.0"
   },
   "license": "MIT",
   "author": "Fe Language Team",
-  "publisher": "fe-language-team",
+  "publisher": "FeLanguageTeam",
   "homepage": "https://fe-lang.org",
   "repository": {
     "type": "git",
@@ -79,7 +79,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "net": "^1.0.2",
     "vscode-languageclient": "^8.1.0"
   }
 }

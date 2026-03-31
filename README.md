@@ -14,13 +14,13 @@ Syntax highlighting, diagnostics, go-to-definition, and more for the [Fe](https:
 The `fe` CLI (which includes the language server) must be installed:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/argotorg/fe/master/feup/feup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/fe-lang/fe/master/feup/feup.sh | bash
 ```
 
 Or build from source:
 
 ```sh
-cargo install --git https://github.com/argotorg/fe.git fe
+cargo install --git https://github.com/fe-lang/fe.git fe
 ```
 
 The extension looks for the `fe` binary in the following order:
@@ -35,7 +35,7 @@ The extension looks for the `fe` binary in the following order:
 Download the latest `.vsix` from the [releases page](https://github.com/fe-lang/vscode-fe/releases), then install it:
 
 ```sh
-code --install-extension fe-analyzer-*.vsix
+code --install-extension fe-language-*.vsix
 ```
 
 Or from within VS Code: open the command palette (`Ctrl+Shift+P`), run **Extensions: Install from VSIX...**, and select the downloaded file.
